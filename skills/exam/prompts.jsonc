@@ -1,0 +1,9 @@
+// 追问话术模板（零 LLM）
+{
+  "questions": {
+    "mastery": {
+      "text": "哪科最没把握？",
+      "allow_free_text": true
+    }
+  }
+}

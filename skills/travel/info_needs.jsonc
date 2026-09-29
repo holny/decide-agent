@@ -1,0 +1,25 @@
+// 收集清单：DAG depends_on + 降级四策略 + env 绑定（bind 路径）
+{
+  "collect": [
+    {
+      "capability": "location",
+    "precision": "city",
+      "purpose": "用户位置（缺失则追问）",
+      "fallback": "ask_once"
+    },
+    {
+      "capability": "weather",
+      "purpose": "天气（影响天气适配）",
+      "fallback": "neutral",
+      "bind": "weather.condition"
+    },
+    {
+      "capability": "poi_search",
+      "purpose": "候选景点列表",
+      "fallback": "block_to_clarify",
+      "depends_on": [
+        "location"
+      ]
+    }
+  ]
+}

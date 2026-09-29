@@ -1,0 +1,8 @@
+{
+  "kind": "tool_server",
+  "name": "geocode",
+  "side": "server",
+  "description": "Nominatim 地址→坐标（OpenStreetMap，免费/无密钥）",
+  "inputs": { "address": "string" },
+  "outputs": { "lat": "number", "lng": "number", "display_name": "string" }
+}

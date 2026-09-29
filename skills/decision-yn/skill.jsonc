@@ -1,0 +1,16 @@
+{
+  "kind": "scene_template",
+  "name": "decision-yn",
+  "display": "是/否判断",
+  "version": "0.1.0",
+  "keywords": [
+    "该不该",
+    "要不要",
+    "该做吗",
+    "值得吗",
+    "应该吗"
+  ],
+  "requires": {
+    "capabilities": []
+  }
+}

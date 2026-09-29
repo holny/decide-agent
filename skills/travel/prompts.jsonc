@@ -1,0 +1,15 @@
+// 追问话术模板（零 LLM）
+{
+  "questions": {
+    "interest": {
+      "text": "偏好哪种玩法？自然、人文还是亲子？",
+      "options": [
+        "自然",
+        "人文",
+        "亲子",
+        "都行"
+      ],
+      "allow_free_text": true
+    }
+  }
+}

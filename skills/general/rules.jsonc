@@ -1,0 +1,8 @@
+// 经验基线规则（先天）：tag_set 标签命中 / expr 表达式树 / steps 阶梯
+{
+  "scene": "general",
+  "version": 1,
+  "confidence": 0.6,
+  "neutral_confidence": 0.35,
+  "rules": []
+}

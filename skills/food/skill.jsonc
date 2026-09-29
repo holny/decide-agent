@@ -1,0 +1,23 @@
+// 场景元数据：classify 关键词兜底 + 所需能力声明
+{
+  "kind": "scene_template",
+  "name": "food",
+  "display": "美食",
+  "version": "0.1.0",
+  "keywords": [
+    "吃饭",
+    "吃",
+    "餐",
+    "饿",
+    "美食",
+    "饭菜",
+    "点菜",
+    "下馆子"
+  ],
+  "requires": {
+    "capabilities": [
+      "location",
+      "poi_search"
+    ]
+  }
+}

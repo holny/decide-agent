@@ -1,0 +1,118 @@
+// 经验基线规则（先天）：tag_set 标签命中 / expr 表达式树 / steps 阶梯
+{
+  "scene": "food",
+  "version": 1,
+  "confidence": 0.65,
+  "neutral_confidence": 0.35,
+  "rules": [
+    {
+      "dimension": "taste_match",
+      "kind": "tag_set",
+      "slot": "taste_match",
+      "table": {
+        "辣": [
+          "辣",
+          "川菜",
+          "湘菜",
+          "烤鱼"
+        ],
+        "想吃辣": [
+          "辣",
+          "川菜",
+          "湘菜",
+          "烤鱼"
+        ],
+        "清淡": [
+          "清淡",
+          "粤菜",
+          "粥",
+          "素食",
+          "面食"
+        ]
+      },
+      "hit": {
+        "score": 0.9,
+        "basis": "命中口味"
+      },
+      "miss": {
+        "score": 0.3,
+        "basis": "口味不匹配"
+      },
+      "on_missing_slot": {
+        "score": 0.5
+      }
+    },
+    {
+      "dimension": "distance",
+      "kind": "expr",
+      "expr": {
+        "kind": "linear",
+        "field": "distance_m",
+        "default": 1000,
+        "far": 4000
+      }
+    },
+    {
+      "dimension": "price",
+      "kind": "steps",
+      "field": "price_per_person",
+      "default": 80,
+      "steps": [
+        {
+          "le": 40,
+          "score": 0.9
+        },
+        {
+          "le": 70,
+          "score": 0.7
+        },
+        {
+          "le": 100,
+          "score": 0.5
+        }
+      ],
+      "otherwise": 0.2
+    },
+    {
+      "dimension": "queue",
+      "kind": "expr",
+      "expr": {
+        "kind": "linear",
+        "field": "wait_min",
+        "default": 0,
+        "far": 40
+      }
+    },
+    {
+      "dimension": "weather_fit",
+      "kind": "expr",
+      "expr": {
+        "kind": "cond",
+        "field": "weather",
+        "in": [
+          "小雨",
+          "大雨",
+          "暴雨",
+          "雪"
+        ],
+        "then": {
+          "kind": "linear",
+          "field": "distance_m",
+          "default": 1000,
+          "far": 3000
+        },
+        "else": {
+          "kind": "blend",
+          "base": 0.5,
+          "weight": 0.5,
+          "inner": {
+            "kind": "linear",
+            "field": "distance_m",
+            "default": 1000,
+            "far": 3000
+          }
+        }
+      }
+    }
+  ]
+}

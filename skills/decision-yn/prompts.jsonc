@@ -1,0 +1,12 @@
+{
+  "questions": {
+    "risk": {
+      "text": "这个决定最坏的结果是什么？",
+      "allow_free_text": true
+    },
+    "regret": {
+      "text": "如果选了，你最担心后悔什么？",
+      "allow_free_text": true
+    }
+  }
+}

@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "decide-agent — Decision Intelligence Architecture",
+    "output": "docs/architecture-rendered.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "agent-loop",
+        "label": "Agent Loop",
+        "focus": [
+          "channels",
+          "entry",
+          "intent",
+          "planner"
+        ],
+        "note": "How a user turn is classified and answered."
+      },
+      {
+        "id": "decision-core",
+        "label": "Decision core",
+        "focus": [
+          "intent",
+          "kernel",
+          "chain",
+          "memory"
+        ],
+        "note": "Deterministic pipeline with confidence-routed judgment."
+      },
+      {
+        "id": "tools-and-vendors",
+        "label": "Tools and vendors",
+        "focus": [
+          "kernel",
+          "tools",
+          "vendors"
+        ],
+        "note": "Real-world data sources behind candidate collection."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "channels",
+      "type": "external",
+      "label": "Channels",
+      "sublabel": "CLI · HTTP · MCP · A2A",
+      "pos": [
+        10,
+        300
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "entry",
+      "type": "backend",
+      "label": "DecideApp",
+      "sublabel": "chat_turn · bootstrap",
+      "pos": [
+        194,
+        300
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "intent",
+      "type": "backend",
+      "label": "Entry Intent",
+      "sublabel": "chain classify",
+      "pos": [
+        424,
+        300
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "planner",
+      "type": "external",
+      "label": "LLM Planner",
+      "sublabel": "reply wording",
+      "pos": [
+        424,
+        110
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "kernel",
+      "type": "backend",
+      "label": "Decision Kernel",
+      "sublabel": "collect → score → gate → rank",
+      "pos": [
+        654,
+        300
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "chain",
+      "type": "backend",
+      "label": "Provider Chain",
+      "sublabel": "experience → model → LLM · ≥0.65",
+      "pos": [
+        654,
+        110
+      ],
+      "size": [
+        164,
+        60
+      ]
+    },
+    {
+      "id": "tools",
+      "type": "backend",
+      "label": "Tool Plugins",
+      "sublabel": "POI · geo · weather · gen",
+      "pos": [
+        884,
+        300
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "memory",
+      "type": "database",
+      "label": "Memory & Evolution",
+      "sublabel": "evolved/ · judgments",
+      "pos": [
+        654,
+        450
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "vendors",
+      "type": "external",
+      "label": "External Services",
+      "sublabel": "Amap · Baidu · LLM APIs",
+      "pos": [
+        884,
+        450
+      ],
+      "size": [
+        150,
+        60
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Application",
+      "wraps": [
+        "entry",
+        "intent",
+        "kernel",
+        "chain",
+        "tools"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "External services",
+      "wraps": [
+        "planner",
+        "vendors"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "channels-to-entry",
+      "from": "channels",
+      "to": "entry",
+      "label": "any",
+      "variant": "emphasis",
+      "labelDy": -26
+    },
+    {
+      "id": "entry-to-intent",
+      "from": "entry",
+      "to": "intent",
+      "label": "classify",
+      "labelDy": -26
+    },
+    {
+      "id": "intent-to-kernel",
+      "from": "intent",
+      "to": "kernel",
+      "label": "new_decision",
+      "labelDy": -26
+    },
+    {
+      "id": "intent-to-planner",
+      "from": "intent",
+      "to": "planner",
+      "label": "compose reply",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "kernel-to-chain",
+      "from": "kernel",
+      "to": "chain",
+      "label": "≥0.65",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelDy": -25
+    },
+    {
+      "id": "kernel-to-tools",
+      "from": "kernel",
+      "to": "tools",
+      "label": "collect"
+    },
+    {
+      "id": "kernel-to-memory",
+      "from": "kernel",
+      "to": "memory",
+      "label": "learn",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 38
+    },
+    {
+      "id": "tools-to-vendors",
+      "from": "tools",
+      "to": "vendors",
+      "label": "HTTP",
+      "variant": "dashed",
+      "labelDy": 60
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Agent Loop",
+      "items": [
+        "Entry intent classified by the provider chain, in any language",
+        "LLM planner only composes wording — flow is never if/else"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Deterministic core",
+      "items": [
+        "State-machine pipeline: collect → score → gate → synthesize",
+        "Weights live in templates & config; Pareto + Reflexion pruning"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Graceful degradation",
+      "items": [
+        "Planner down → state-machine pipeline",
+        "Vendors down → mock sources; models down → rules-only"
+      ]
+    }
+  ]
+}

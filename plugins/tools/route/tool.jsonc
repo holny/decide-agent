@@ -1,0 +1,8 @@
+{
+  "kind": "tool_server",
+  "name": "route",
+  "side": "server",
+  "description": "OSRM 路径规划（免费/无密钥/驾车，返回距离+耗时）",
+  "inputs": { "from_lng": "number", "from_lat": "number", "to_lng": "number", "to_lat": "number" },
+  "outputs": { "distance_m": "number", "duration_s": "number" }
+}

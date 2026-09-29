@@ -1,0 +1,20 @@
+// 打分维度与默认权重（weight 可热调；source: user = 需要用户输入的维度）
+{
+  "dimensions": {
+    "mastery": {
+      "display": "掌握度",
+      "weight": 0.4,
+      "description": "该科目当前掌握程度，越薄弱越优先"
+    },
+    "weight_of_score": {
+      "display": "分值占比",
+      "weight": 0.3,
+      "description": "分值占比越高越优先"
+    },
+    "time_fit": {
+      "display": "时间可行",
+      "weight": 0.3,
+      "description": "剩余时间内可完成的程度"
+    }
+  }
+}

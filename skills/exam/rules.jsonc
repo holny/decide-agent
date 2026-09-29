@@ -1,0 +1,26 @@
+// 经验基线规则（先天）：tag_set 标签命中 / expr 表达式树 / steps 阶梯
+{
+  "scene": "exam",
+  "version": 1,
+  "confidence": 0.65,
+  "neutral_confidence": 0.35,
+  "rules": [
+    {
+      "dimension": "time_fit",
+      "kind": "steps",
+      "field": "days_left",
+      "default": 7,
+      "steps": [
+        {
+          "le": 3,
+          "score": 0.9
+        },
+        {
+          "le": 10,
+          "score": 0.6
+        }
+      ],
+      "otherwise": 0.3
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+// 打分维度与默认权重（weight 可热调；source: user = 需要用户输入的维度）
+{
+  "dimensions": {
+    "taste_match": {
+      "display": "口味匹配",
+      "weight": 0.35,
+      "source": "user",
+      "description": "候选口味与用户口味偏好的匹配程度"
+    },
+    "distance": {
+      "display": "距离",
+      "weight": 0.2,
+      "description": "距离用户的远近，越近越好"
+    },
+    "price": {
+      "display": "价格",
+      "weight": 0.2,
+      "description": "人均价格与用户预算带的匹配"
+    },
+    "queue": {
+      "display": "排队",
+      "weight": 0.15,
+      "description": "预计排队时间，越短越好"
+    },
+    "weather_fit": {
+      "display": "天气适配",
+      "weight": 0.1,
+      "description": "当前天气下前往该店的便利程度（雨雪天近的更好）"
+    }
+  }
+}

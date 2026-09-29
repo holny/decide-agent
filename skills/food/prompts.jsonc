@@ -1,0 +1,14 @@
+// 追问话术模板（零 LLM）
+{
+  "questions": {
+    "taste_match": {
+      "text": "今天想吃辣还是清淡？",
+      "options": [
+        "想吃辣",
+        "清淡",
+        "都可以"
+      ],
+      "allow_free_text": true
+    }
+  }
+}

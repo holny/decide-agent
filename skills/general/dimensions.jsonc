@@ -1,0 +1,26 @@
+// 打分维度与默认权重（weight 可热调；source: user = 需要用户输入的维度）
+// 通用消费决策维度：商品/服务购买类；评分规则为空 → 打分走模型语义判定
+{
+  "dimensions": {
+    "fit": {
+      "display": "需求匹配",
+      "weight": 0.3,
+      "description": "与你的用途/需求的契合程度"
+    },
+    "price": {
+      "display": "价格成本",
+      "weight": 0.3,
+      "description": "购买价格与长期使用成本，越划算越好"
+    },
+    "quality": {
+      "display": "品质口碑",
+      "weight": 0.25,
+      "description": "质量、耐用性与口碑评价"
+    },
+    "service": {
+      "display": "获取售后",
+      "weight": 0.15,
+      "description": "购买渠道便利性与保修售后"
+    }
+  }
+}

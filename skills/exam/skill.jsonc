@@ -1,0 +1,18 @@
+// 场景元数据：classify 关键词兜底 + 所需能力声明
+{
+  "kind": "scene_template",
+  "name": "exam",
+  "display": "考试复习",
+  "version": "0.1.0",
+  "keywords": [
+    "考试",
+    "复习",
+    "备考",
+    "刷题",
+    "考试周",
+    "期末"
+  ],
+  "requires": {
+    "capabilities": []
+  }
+}

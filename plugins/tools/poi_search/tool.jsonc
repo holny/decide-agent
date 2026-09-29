@@ -1,0 +1,14 @@
+// 内置工具声明（kind: tool_server；实现同目录 impl.py）
+{
+  "kind": "tool_server",
+  "name": "poi_search",
+  "side": "server",
+  "description": "按场景搜索候选（food→餐馆 / travel→景点，mock，确定性）",
+  "inputs": {
+    "location": "object",
+    "scene": "string"
+  },
+  "outputs": {
+    "candidates": "list[object]"
+  }
+}

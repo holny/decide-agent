@@ -1,0 +1,69 @@
+// Decide-Agent 内置默认配置（随包发布，勿改；用户配置放 ~/.config/decide-agent/config.jsonc）
+//
+// 逐项说明：
+//   decision.confidence_threshold     置信门控阈值，低于则追问（interactive 时）
+//   decision.decision_mode            auto（provider 链逐级降级）| experience（纯规则零模型）
+//   decision.degrade_chain            链顺序；experience 恒兜底
+//   decision.provider_timeouts        各阶段时钟预算（秒）；null = 不限，超时降级非失败
+//   output.format                     json_minimal | json_full | text
+//   output.language                    auto（按输入自动检测）| zh | en
+//   decision_model / llm              判断模型与②级兜底；endpoint+model 都配置才启用该层；
+//                                     密钥经 api_key_env 引用环境变量（仓库零厂商信息）
+//   http.auth                         API Key/Bearer 鉴权，默认关（生产开启，红线 15）
+//
+// 外部服务（端点/密钥/模型名）全部外部配置——未配置的层自动不可用；全未配置 = 纯 experience。
+{
+  "decision": {
+    "confidence_threshold": 0.65,
+    "confidence_penalty_per_missing": 0.4,
+    "recommend_alternatives": 2,
+    "decision_mode": "auto",
+    "degrade_chain": [
+      "decision_model",
+      "llm",
+      "experience"
+    ],
+    "provider_timeouts": {
+      "collect": 5.0,
+      "decide": 8.0,
+      "analysis": 3.0
+    }
+  },
+  "output": {
+    "format": "json_minimal",
+    "language": "auto"
+  },
+  "decision_model": {},
+  "llm": {
+    "discover_opencode": false
+  },
+  "http": {
+    "auth": {
+      "enabled": false,
+      "api_key_env": null
+    }
+  },
+  "model": {
+    "chat_strong": null,
+    "chat_fast": null,
+    "decision": null
+  },
+  "tools": {
+    "region": "cn",
+    "poi_search": {
+      "radius_m": 5000,
+      "scene_query": { "food": "美食", "travel": "景点" },
+      "providers": null
+    },
+    "vendor": {
+      "amap": { "mcp_url": "https://mcp.amap.com/mcp", "key_env": "AMAP_KEY" },
+      "baidu": { "places_url": "https://api.map.baidu.com/place/v2/search", "key_env": "BAIDU_MAP_KEY" },
+      "google": { "places_url": "https://places.googleapis.com/v1/places:searchNearby", "key_env": "GOOGLE_MAPS_KEY" },
+      "foursquare": { "places_url": "https://api.foursquare.com/v3/places/search", "key_env": "FOURSQUARE_KEY" },
+      "osm": { "overpass_url": "https://overpass-api.de/api/interpreter" }
+    }
+  },
+  "paths": {
+    "data_dir": "~/.local/share/decide-agent"
+  }
+}

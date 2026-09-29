@@ -1,0 +1,24 @@
+{
+  "dimensions": {
+    "risk": {
+      "display": "风险",
+      "weight": 0.3,
+      "description": "选择的下行风险"
+    },
+    "regret": {
+      "display": "后悔度",
+      "weight": 0.25,
+      "description": "未来后悔的可能性"
+    },
+    "impact": {
+      "display": "影响",
+      "weight": 0.25,
+      "description": "对当前生活的积极影响"
+    },
+    "reversibility": {
+      "display": "可逆性",
+      "weight": 0.2,
+      "description": "选择后是否容易撤回"
+    }
+  }
+}

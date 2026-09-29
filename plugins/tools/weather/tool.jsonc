@@ -1,0 +1,12 @@
+// 内置工具声明（kind: tool_server；实现同目录 impl.py）
+{
+  "kind": "tool_server",
+  "name": "weather",
+  "side": "server",
+  "description": "查询天气（mock）",
+  "inputs": {},
+  "outputs": {
+    "condition": "string",
+    "temperature_c": "number"
+  }
+}

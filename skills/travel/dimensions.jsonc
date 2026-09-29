@@ -1,0 +1,31 @@
+// 打分维度与默认权重（weight 可热调；source: user = 需要用户输入的维度）
+{
+  "dimensions": {
+    "interest": {
+      "display": "兴趣匹配",
+      "weight": 0.3,
+      "source": "user",
+      "description": "景点类型与偏好的匹配（自然/人文/亲子…）"
+    },
+    "cost": {
+      "display": "花费",
+      "weight": 0.25,
+      "description": "门票+交通的性价比"
+    },
+    "distance": {
+      "display": "距离",
+      "weight": 0.2,
+      "description": "路程远近"
+    },
+    "weather_fit": {
+      "display": "天气适配",
+      "weight": 0.15,
+      "description": "天气下的游玩体验（雨雪天近的更好）"
+    },
+    "crowd": {
+      "display": "人流",
+      "weight": 0.1,
+      "description": "拥挤程度，越清静越好"
+    }
+  }
+}

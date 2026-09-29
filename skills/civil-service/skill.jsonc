@@ -1,0 +1,19 @@
+// 场景元数据：classify 关键词兜底 + 所需能力声明
+{
+  "kind": "scene_template",
+  "name": "civil-service",
+  "display": "考公选岗",
+  "version": "0.1.0",
+  "keywords": [
+    "考公",
+    "公务员",
+    "国考",
+    "省考",
+    "编制",
+    "岗位",
+    "上岸"
+  ],
+  "requires": {
+    "capabilities": []
+  }
+}

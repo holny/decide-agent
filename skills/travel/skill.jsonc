@@ -1,0 +1,22 @@
+// 场景元数据：classify 关键词兜底 + 所需能力声明
+{
+  "kind": "scene_template",
+  "name": "travel",
+  "display": "旅游",
+  "version": "0.1.0",
+  "keywords": [
+    "旅游",
+    "玩",
+    "景点",
+    "出游",
+    "旅行",
+    "去哪玩",
+    "散心"
+  ],
+  "requires": {
+    "capabilities": [
+      "location",
+      "poi_search"
+    ]
+  }
+}

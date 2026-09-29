@@ -1,0 +1,25 @@
+// 打分维度与默认权重（weight 可热调；source: user = 需要用户输入的维度）
+{
+  "dimensions": {
+    "position_fit": {
+      "display": "岗位匹配",
+      "weight": 0.3,
+      "description": "专业/学历/经历与岗位要求的匹配"
+    },
+    "competition": {
+      "display": "竞争度",
+      "weight": 0.25,
+      "description": "报录比，越低越好"
+    },
+    "location_fit": {
+      "display": "地域意愿",
+      "weight": 0.25,
+      "description": "工作地与生活规划的契合"
+    },
+    "salary_fit": {
+      "display": "待遇",
+      "weight": 0.2,
+      "description": "薪酬待遇与预期"
+    }
+  }
+}

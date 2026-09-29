@@ -1,0 +1,44 @@
+// 收集清单：DAG depends_on + 降级四策略 + env 绑定（bind 路径）
+{
+  "collect": [
+    {
+      "capability": "location",
+      "precision": "city",
+      "purpose": "用户位置（缺失则追问）",
+      "fallback": "ask_once"
+    },
+    {
+      "capability": "weather",
+      "purpose": "当前天气（影响天气适配维度）",
+      "fallback": "neutral",
+      "bind": "weather.condition"
+    },
+    {
+      "capability": "poi_search",
+      "purpose": "候选餐馆列表",
+      "fallback": "block_to_clarify",
+      "depends_on": [
+        "location"
+      ]
+    },
+    {
+      "capability": "route",
+      "purpose": "导航路径（用户位置→候选餐厅的距离和耗时）",
+      "fallback": "neutral",
+      "depends_on": [
+        "location"
+      ]
+    },
+    {
+      "capability": "traffic",
+      "purpose": "交通状况",
+      "fallback": "neutral",
+      "bind": "traffic.level"
+    },
+    {
+      "capability": "deals",
+      "purpose": "优惠信息",
+      "fallback": "neutral"
+    }
+  ]
+}

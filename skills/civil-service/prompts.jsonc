@@ -1,0 +1,9 @@
+// 追问话术模板（零 LLM）
+{
+  "questions": {
+    "location_fit": {
+      "text": "期望工作地在哪（城市/回家乡）？",
+      "allow_free_text": true
+    }
+  }
+}

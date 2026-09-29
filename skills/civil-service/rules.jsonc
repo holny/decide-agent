@@ -1,0 +1,30 @@
+// 经验基线规则（先天）：tag_set 标签命中 / expr 表达式树 / steps 阶梯
+{
+  "scene": "civil-service",
+  "version": 1,
+  "confidence": 0.65,
+  "neutral_confidence": 0.35,
+  "rules": [
+    {
+      "dimension": "competition",
+      "kind": "steps",
+      "field": "ratio",
+      "default": 50,
+      "steps": [
+        {
+          "le": 20,
+          "score": 0.9
+        },
+        {
+          "le": 60,
+          "score": 0.6
+        },
+        {
+          "le": 120,
+          "score": 0.3
+        }
+      ],
+      "otherwise": 0.1
+    }
+  ]
+}

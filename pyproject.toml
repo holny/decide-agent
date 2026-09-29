@@ -1,0 +1,61 @@
+[project]
+name = "decide-agent"
+version = "0.1.0"
+description = "Intelligent decision agent for indecisive users - P0 skeleton"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "typer>=0.12",
+    "pyyaml>=6.0",
+    "fastapi>=0.141.1",
+    "uvicorn>=0.53.0",
+    "httpx>=0.28.1",
+    "mcp>=1.2,<2",
+    "a2a-sdk[http-server]>=0.2,<1",
+    "prompt-toolkit>=3.0.53",
+]
+
+[project.scripts]
+decide-agent = "decide_agent.app.main:app"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.6",
+    "import-linter>=2.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/decide_agent"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"plugins" = "share/decide_agent/plugins"
+"skills" = "share/decide_agent/skills"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.importlinter]
+root_packages = ["decide_agent"]
+
+[[tool.importlinter.contracts]]
+name = "zones: app > adapters > config > core > foundation (ARCHITECTURE 12.2)"
+type = "layers"
+layers = [
+    "decide_agent.app",
+    "decide_agent.channel | decide_agent.plugins | decide_agent.models",
+    "decide_agent.config",
+    "decide_agent.core",
+    "decide_agent.schemas | decide_agent.common",
+]

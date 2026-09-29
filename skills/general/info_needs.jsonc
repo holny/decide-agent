@@ -1,0 +1,4 @@
+// 收集清单：DAG depends_on + 降级四策略 + env 绑定（bind 路径）
+{
+  "collect": []
+}

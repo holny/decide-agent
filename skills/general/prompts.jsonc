@@ -1,0 +1,9 @@
+// 追问话术模板（零 LLM）
+{
+  "questions": {
+    "fit": {
+      "text": "这些选项里你更看重什么？",
+      "allow_free_text": true
+    }
+  }
+}

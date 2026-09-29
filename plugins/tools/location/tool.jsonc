@@ -1,0 +1,14 @@
+// 内置工具声明（kind: tool_server；实现同目录 impl.py）
+{
+  "kind": "tool_server",
+  "name": "location",
+  "side": "server",
+  "description": "获取用户位置（mock）",
+  "inputs": {},
+  "outputs": {
+    "lat": "number",
+    "lng": "number",
+    "city": "string",
+    "district": "string"
+  }
+}

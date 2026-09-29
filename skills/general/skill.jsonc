@@ -1,0 +1,17 @@
+// 场景元数据：classify 关键词兜底 + 所需能力声明
+{
+  "kind": "scene_template",
+  "name": "general",
+  "display": "通用决策",
+  "version": "0.1.0",
+  "keywords": [
+    "选择",
+    "纠结",
+    "哪个好",
+    "怎么选",
+    "帮我选"
+  ],
+  "requires": {
+    "capabilities": []
+  }
+}
