@@ -8,7 +8,6 @@
 
 加载顺序：内置默认 ← 场景 reject_routes.jsonc（覆盖合并同名键）。
 """
-import re
 from pathlib import Path
 
 from decide_agent.common.jsonc import load as load_jsonc
@@ -57,6 +56,4 @@ def load_reject_routes(scene: str, search_dirs: list[Path]) -> dict:
             scene_data = load_jsonc(path) or {}
         except Exception:  # noqa: BLE001 — 数据缺陷不阻断（L4）
             break
-    merged = _merged(scene_data if isinstance(scene_data, dict) else {})
-    merged["_segment_re"] = re.compile("|".join(map(re.escape, merged["segment_reject"])))
-    return merged
+    return _merged(scene_data if isinstance(scene_data, dict) else {})

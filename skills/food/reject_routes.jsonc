@@ -1,0 +1,18 @@
+// 拒绝路径（P8）：美食场景追加项，与内置默认及 general 场景合并使用。
+{
+  "scene": "food",
+  "version": 1,
+  "exact_reject": [
+    "随便吃吃"
+  ],
+  "segment_reject": [
+    "人多", "排队少", "不走", "别去"
+  ],
+  "routes": [
+    {
+      "when": "requirement-description-as-candidate",
+      "reject": "口味/用途描述不是候选",
+      "detail": "「想吃辣的川菜、要排队少的」是筛选条件——应约束打分规则，而不是把「辣的川菜」当候选"
+    }
+  ]
+}

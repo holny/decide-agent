@@ -1,6 +1,6 @@
 {
   "name": "general-neutral-golden",
-  "description": "通用场景无规则基线：全维度中性 0.5 + evidence_scope=neutral（诚实披露无证据）",
+  "description": "通用场景无规则基线：全维度中性 0.5，evidence_scope 全为 degraded（experience 无规则 → 中性置信 + 链降级标记，诚实披露无证据）",
   "input": {
     "question": "帮我选一本书送朋友",
     "scene_hint": "general",
@@ -30,7 +30,6 @@
       "price": "degraded",
       "quality": "degraded",
       "service": "degraded"
-    },
-    "all_evidence_neutral": false
+    }
   }
 }

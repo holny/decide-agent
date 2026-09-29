@@ -42,26 +42,38 @@ async def test_mcp_stdio_full_loop(mcp_env, server_script, tmp_path):
 
     if server_script is None:
         pytest.skip("decide-agent entrypoint script not found")
+
+    async def _call_with_retry(session, name, args, attempts=2):
+        """全套件负载下子进程冷启动+首判可能超时 → 错误负载透明失败或重试一次。"""
+        import asyncio
+
+        last = None
+        for attempt in range(attempts):
+            result = await asyncio.wait_for(session.call_tool(name, args), timeout=120)
+            data = result.structuredContent or _parse_text(result)
+            if not (isinstance(data, dict) and data.get("error")):
+                return data
+            last = data
+            await asyncio.sleep(1)
+        pytest.fail(f"tool error payload after {attempts} attempts: {last}", pytrace=False)
     params = StdioServerParameters(command=server_script, args=["serve-mcp"], env=mcp_env)
     async with stdio_client(params) as (read, write), ClientSession(read, write) as session:
         await session.initialize()
 
         # ① 首调：question → require_action（taste 缺失追问）
-        first = await session.call_tool(
-            "make_decision", {"question": "我想吃饭", "interactive": True},
+        data = await _call_with_retry(
+            session, "make_decision", {"question": "我想吃饭", "interactive": True},
         )
-        data = first.structuredContent or _parse_text(first)
         assert data["status"] == "require_action", data
         assert data["pending"]["payload"]["dimension"] == "taste_match"
         decision_id = data["decision_id"]
         request_id = data["pending"]["request_id"]
 
         # ② continuation：回答追问 → completed + learned_memory
-        second = await session.call_tool("make_decision", {
+        data2 = await _call_with_retry(session, "make_decision", {
             "decision_id": decision_id, "request_id": request_id,
             "response": "辣", "scope": "always",
         })
-        data2 = second.structuredContent or _parse_text(second)
         assert data2["status"] == "completed"
         assert data2["learned_memory"], "scope=always 应落 learned_memory"
 
