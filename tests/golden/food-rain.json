@@ -1,0 +1,63 @@
+{
+  "name": "food-rain-golden",
+  "description": "美食场景规则命中：口味规则得分 + 天气/距离 expr，证据分级 rule-hit",
+  "input": {
+    "question": "想吃辣",
+    "scene_hint": "food",
+    "interactive": false,
+    "candidates": [
+      {
+        "id": "蜀香居",
+        "name": "蜀香居",
+        "tags": [
+          "辣"
+        ],
+        "distance_m": 500,
+        "price_per_person": 65,
+        "wait_min": 10
+      },
+      {
+        "id": "辣妹子",
+        "name": "辣妹子",
+        "tags": [
+          "辣"
+        ],
+        "distance_m": 900,
+        "price_per_person": 55,
+        "wait_min": 20
+      }
+    ],
+    "env": {
+      "weather": "小雨"
+    },
+    "slots": {
+      "taste_match": "辣"
+    },
+    "weights": {
+      "taste_match": 0.35,
+      "distance": 0.2,
+      "price": 0.2,
+      "queue": 0.15,
+      "weather_fit": 0.1
+    }
+  },
+  "expected": {
+    "scene": "food",
+    "recommendation": "蜀香居",
+    "total_score": 0.8258,
+    "dimension_scores": {
+      "taste_match": 0.9,
+      "distance": 0.875,
+      "price": 0.7,
+      "queue": 0.75,
+      "weather_fit": 0.833
+    },
+    "evidence_scope": {
+      "taste_match": "rule-hit",
+      "distance": "rule-hit",
+      "price": "rule-hit",
+      "queue": "rule-hit",
+      "weather_fit": "rule-hit"
+    }
+  }
+}

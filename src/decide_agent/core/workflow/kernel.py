@@ -621,6 +621,22 @@ class DecisionKernel:
     # ------------------------------------------------------------------ internals
 
     @staticmethod
+    def _evidence_class(result) -> str:
+        """维度证据分级（P8 proof_scope）：结论范围机器可读。"""
+        if result is None or not getattr(result, "ok", False):
+            return "missing"
+        answer = result.answer
+        if answer is None or getattr(answer, "degraded", False):
+            return "degraded"
+        provider = getattr(result, "provider", "") or ""
+        if provider == "experience":
+            try:
+                return "rule-hit" if float(answer.confidence) >= 0.5 else "neutral"
+            except (TypeError, ValueError):
+                return "neutral"
+        return "model-judged"
+
+    @staticmethod
     def _resolve_numbered_answer(payload: dict, response: dict) -> dict:
         """纯序号应答（「1」「选2」）→ 选项原文；非序号/越界原样透传（序号不吞自由输入）。"""
         match = _NUM_REPLY.match(str(response.get("value") or ""))
@@ -711,6 +727,14 @@ class DecisionKernel:
         # 帕累托前沿过滤（淘汰被支配候选）
         frontier_ids, dominated_ids = pareto_filter(session.candidates, ds_by_cand)
         ranked = [cid for cid in ranked if cid in frontier_ids]
+
+        # proof_scope（P8）：胜出候选各维度的证据分级——结论不超过证据范围
+        evidence_scope: dict[str, str] = {}
+        if ranked:
+            rec_cid = ranked[0]
+            for ds_item in ds_by_cand[rec_cid]:
+                evidence_scope[ds_item.dimension] = self._evidence_class(
+                    results_map.get((rec_cid, ds_item.dimension)))
 
         from decide_agent.core.decision.gating import evaluate
 
@@ -814,6 +838,7 @@ class DecisionKernel:
             alternatives=recs[1:3],
             confidence=verdict.confidence,
             filtered_out=[],
+            evidence_scope=evidence_scope,
         )
         return DecisionOutcome(
             decision_id=did, status="completed", state=sm.state.value,

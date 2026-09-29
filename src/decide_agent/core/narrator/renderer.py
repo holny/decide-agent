@@ -117,6 +117,10 @@ def _render_text(outcome: DecisionOutcome, display: dict[str, str], language: st
         lines.append(f"  · {display.get(ds.dimension, ds.dimension)}: {ds.score:.2f} (权重 {ds.weight})")
     lines.append(S["reason"].format(
         reason=build_reason(display, rec.dimension_scores, language=language)))
+    scope = outcome.result.evidence_scope or {}
+    weak = [display.get(dim, dim) for dim, cls in scope.items() if cls in ("neutral", "degraded", "missing")]
+    if weak:
+        lines.append(S["evidence_note"].format(dims="、".join(weak)))
     for alt in result.alternatives:
         lines.append(S["alternative"].format(
             name=alt.candidate.name, score=f"{alt.total_score:.2f}",

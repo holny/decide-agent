@@ -214,6 +214,7 @@ class AgentToolkit:
                         display.get(d.dimension, d.dimension): round(d.score, 2)
                         for d in rec.dimension_scores
                     },
+                    "evidence_scope": result.evidence_scope,
                 }
                 summary["alternatives"] = [
                     {"name": alt.candidate.name, "score": round(alt.total_score, 3),

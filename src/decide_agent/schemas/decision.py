@@ -30,3 +30,8 @@ class DecisionResult(BaseModel):
     filtered_out: list[str] = Field(
         default_factory=list, description="candidate ids removed by taboo/hard filters"
     )
+    evidence_scope: dict[str, str] = Field(
+        default_factory=dict,
+        description="proof scope (P8): winning-candidate dimension → evidence class "
+        "(rule-hit | model-judged | neutral | degraded | missing)",
+    )
