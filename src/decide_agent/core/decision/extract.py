@@ -76,8 +76,14 @@ def _from_markers(text: str) -> tuple[str, list[str]] | None:
     return (question or "请从以下选项中帮我选择"), options
 
 
-def extract_inline_candidates(text: str) -> tuple[str, list[str]] | None:
+def extract_inline_candidates(
+    text: str, reject_segments: list[str] | None = None,
+) -> tuple[str, list[str]] | None:
     text = text.strip()
+    extra_re = (
+        re.compile("|".join(map(re.escape, reject_segments)))
+        if reject_segments else None
+    )
 
     # 分支一：字母标记（A. B. C.）
     by_markers = _from_markers(text)
@@ -123,7 +129,10 @@ def extract_inline_candidates(text: str) -> tuple[str, list[str]] | None:
         prefix_clauses = clauses[: hint_index - 1]
 
     parts = [_clean(p) for p in candidates or []]
-    parts = [p for p in parts if len(p) >= 2 and not NON_OPTION_RE.search(p)]
+    parts = [
+        p for p in parts if len(p) >= 2 and not NON_OPTION_RE.search(p)
+        and not (extra_re and extra_re.search(p))
+    ]
     if len(parts) < 2:
         return None
 

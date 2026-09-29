@@ -99,6 +99,7 @@ class DecisionKernel:
         subject_memory_factory: Callable[[str], Any] | None = None,
         *,
         gate_threshold: float = 0.6,
+        reject_routes_loader: Callable[[str], dict] | None = None,
         penalty_per_missing: float = 0.40,
         question_timeout_s: float | None = None,
         clock: callable = time.time,  # type: ignore[valid-type]
@@ -116,6 +117,7 @@ class DecisionKernel:
         self._user_dims_resolver = user_dims_resolver
         self._threshold = gate_threshold
         self._penalty = penalty_per_missing
+        self._reject_routes_loader = reject_routes_loader
         self._question_timeout_s = question_timeout_s
         self._clock = clock
         self._pending = PendingRegistry()
@@ -357,7 +359,14 @@ class DecisionKernel:
         if not request.candidates:
             from decide_agent.core.decision.extract import extract_inline_candidates
 
-            parsed = extract_inline_candidates(request.question)
+            reject_cfg = (
+                self._reject_routes_loader("general")
+                if self._reject_routes_loader else None
+            )
+            parsed = extract_inline_candidates(
+                request.question,
+                reject_segments=(reject_cfg or {}).get("segment_reject"),
+            )
             if parsed is not None:
                 from decide_agent.schemas.workflow import normalize_candidates
 
@@ -532,9 +541,13 @@ class DecisionKernel:
                             r"^(?:来|比如|例如|像是|有|包括|就是)\s*", "", options[0],
                         ).strip() or options[0]
 
-                    # 非应答过滤："不知道/随便/都行" 等不是候选
-                    NON_ANSWERS = {"不知道", "不确定", "随便", "都行", "都好", "没有", "没想好", "无所谓"}
-                    options = [o for o in options if o not in NON_ANSWERS]
+                    # 非应答过滤（reject_routes.exact_reject，数据化）："不知道/随便" 不是候选
+                    reject_cfg = (
+                        self._reject_routes_loader(session.scene or "general")
+                        if self._reject_routes_loader else None
+                    )
+                    exact_reject = set((reject_cfg or {}).get("exact_reject") or [])
+                    options = [o for o in options if o not in exact_reject]
 
                     # 只切出 1 段且含请求语义 → 不是候选清单，是新问题 → 开新决策
                     is_new_question = (

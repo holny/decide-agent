@@ -1,0 +1,25 @@
+// 拒绝路径（P8，Ontology 实践）："看似合理但不能走"的路径显式化。
+// exact_reject / segment_reject 与内置默认合并（同名键去重追加）；
+// routes 为文档化路径——供维护者参考，并可注入 Agent 提示词。
+{
+  "scene": "general",
+  "version": 1,
+  "exact_reject": [
+    "都还可以", "没啥想法"
+  ],
+  "segment_reject": [
+    "顺便", "主要是想", "最好"
+  ],
+  "routes": [
+    {
+      "when": "requirement-description-as-candidate",
+      "reject": "需求描述不是候选",
+      "detail": "「办公用、看看美剧」是需求——应喂给候选生成器，而不是当作候选打分"
+    },
+    {
+      "when": "category-less-generation",
+      "reject": "无品类不生成",
+      "detail": "「不知道买什么」没有品类 → 生成器返回 NEED_CATEGORY，保持追问不硬造"
+    }
+  ]
+}

@@ -130,6 +130,19 @@ def build_provider_chain(*, decision_mode: str | None = None, sink=None) -> Prov
     return ProviderChain(tiers, sink=sink, confidence_threshold=threshold)
 
 
+def _build_reject_routes_loader():
+    """reject_routes 装配：场景拒绝路径数据化（P8，Ontology 实践）。"""
+    from functools import lru_cache
+
+    from decide_agent.experience.reject_routes import load_reject_routes
+
+    @lru_cache(maxsize=64)
+    def loader(scene: str) -> dict:
+        return load_reject_routes(scene, list(builtin_search_dirs()))
+
+    return loader
+
+
 def build_dialogue_planner(kernel: DecisionKernel, data_dir=None):
     """Agent Loop 装配（P7）：LLM 规划器 + 工具集；LLM 未配置 → (None, None) 回落状态机管道。"""
     from decide_agent.config.paths import Paths

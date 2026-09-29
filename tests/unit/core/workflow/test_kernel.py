@@ -573,3 +573,42 @@ def test_general_dimension_inference_failure_falls_back_to_template():
     ))
     dims = {d.dimension for d in outcome.result.recommendation.dimension_scores}
     assert dims == {"fit", "price", "quality", "service"}  # 通用模板兜底
+
+
+def test_reject_routes_scene_data_driven():
+    """P8：拒绝路径数据化——场景 exact_reject 生效，内置默认保留。"""
+    from decide_agent.experience.reject_routes import load_reject_routes
+
+    routes = load_reject_routes("general", [REPO_SKILLS])
+    assert "不知道" in routes["exact_reject"]  # 内置默认
+    assert "都还可以" in routes["exact_reject"]  # 场景追加
+    assert any(r["when"] == "requirement-description-as-candidate" for r in routes["routes"])
+
+    k = kernel(
+        scenes=["food", "general", "chat"],
+        reject_routes_loader=lambda s: routes,
+        question_resolver=lambda s, d: {"text": "偏好？", "options": ["辣", "清淡"]},
+    )
+    asked = k.make_decision(request(slots={}, interactive=True))
+    replied = k.respond(asked.decision_id, asked.pending.request_id, {"value": "都还可以"})
+    # 场景级拒绝词生效：不当候选（后续行为不限——关键是不被当选项）
+    if replied.result is not None and replied.result.recommendation is not None:
+        assert replied.result.recommendation.candidate.name != "都还可以"
+
+
+def test_reject_routes_segment_filter_in_extraction():
+    """场景 segment_reject 参与内联候选片段过滤。"""
+    from decide_agent.experience.reject_routes import load_reject_routes
+
+    routes = load_reject_routes("general", [REPO_SKILLS])
+    k = kernel(
+        scenes=["food", "general", "chat"],
+        reject_routes_loader=lambda s: routes,
+    )
+    outcome = k.make_decision(DecisionRequest(
+        question="帮我对比 主要是想办公，顺便看看美剧",
+        scene_hint="general", interactive=False,
+    ))
+    # 「主要是想办公」「顺便看看美剧」被拒绝 → 误判候选不再进入管道
+    if outcome.result is not None and outcome.result.recommendation is not None:
+        assert outcome.result.recommendation.candidate.name not in ("主要是想办公", "顺便看看美剧")
